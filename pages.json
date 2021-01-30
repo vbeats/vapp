@@ -1,0 +1,39 @@
+{
+	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "首页"
+			}
+		},
+		{
+			"path":"pages/me/index",
+			"style":{
+				"navigationBarTitleText":"我"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "vapp",
+		"navigationBarBackgroundColor": "#F8F8F8",
+		"backgroundColor": "#F8F8F8"
+	},
+	"tabBar": {
+		"color": "#8a8a8a",
+		"selectedColor": "#1296db",
+		"borderStyle": "black",
+		"backgroundColor": "#ffffff",
+		"list": [{
+			"pagePath": "pages/index/index",
+			"iconPath": "static/imgs/home.png",
+			"selectedIconPath": "static/imgs/homes.png",
+			"text": "首页"
+		}, {
+			"pagePath": "pages/me/index",
+			"iconPath": "static/imgs/me.png",
+			"selectedIconPath": "static/imgs/mes.png",
+			"text": "我"
+		}]
+	}
+}
