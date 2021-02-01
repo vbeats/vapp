@@ -1,7 +1,7 @@
 <template>
 	<div class="me">
 		me.....
-		<button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!token">嘿嘿嘿</button>
+		<button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!userInfo.username">嘿嘿嘿</button>
 	</div>
 </template>
 
@@ -9,16 +9,25 @@
 	import {
 		getToken
 	} from '@/utils/auth'
+	import {
+		mapGetters
+	} from 'vuex'
 	export default {
 		data() {
 			return {
-				token: uni.getStorageSync('token')
+
 			}
+		},
+		computed: {
+			...mapGetters(['userInfo'])
 		},
 		methods: {
 			getUserInfo(userInfo) {
 				getToken(userInfo)
 			}
+		},
+		mounted() {
+			console.log(this.userInfo)
 		}
 	}
 </script>
