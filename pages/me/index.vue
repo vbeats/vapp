@@ -6,31 +6,24 @@
 </template>
 
 <script>
-	import {
-		getToken
-	} from '@/utils/auth'
-	import {
-		mapGetters
-	} from 'vuex'
-	export default {
-		data() {
-			return {
-
-			}
-		},
-		computed: {
-			...mapGetters(['userInfo'])
-		},
-		methods: {
-			getUserInfo(userInfo) {
-				getToken(userInfo)
-			}
-		},
-		mounted() {
-			console.log(this.userInfo)
+import { getToken } from '@/utils/auth';
+import { mapGetters } from 'vuex';
+export default {
+	data() {
+		return {};
+	},
+	computed: {
+		...mapGetters(['userInfo'])
+	},
+	methods: {
+		getUserInfo(userInfo) {
+			getToken(userInfo);
 		}
+	},
+	mounted() {
+		console.log(this.userInfo);
 	}
+};
 </script>
 
-<style>
-</style>
+<style></style>

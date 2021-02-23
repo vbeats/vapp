@@ -7,9 +7,9 @@
 			}
 		},
 		{
-			"path":"pages/me/index",
-			"style":{
-				"navigationBarTitleText":"我"
+			"path": "pages/me/index",
+			"style": {
+				"navigationBarTitleText": "我"
 			}
 		}
 	],
