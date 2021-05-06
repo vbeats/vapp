@@ -29,4 +29,4 @@
 
 - 注意: `getUserInfo` 等返回加密数据的操作必须在`login`获取了`code`之后进行  否则`code`对应的`session_key`无法解密数据
 
-![demo](https://github.com/boot-vue/pics/blob/main/wechat/2.png?raw=true)
+![demo](https://cdn.jsdelivr.net/gh/boot-vue/pics@main/wechat/2.png)
