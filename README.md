@@ -1,5 +1,8 @@
 # vapp
 
+Sponsor [![paypal.me/bootvue](https://cdn.jsdelivr.net/gh/boot-vue/pics@main/icon/paypal.svg)](https://www.paypal.me/bootvue)
+☕☕☕
+
 [后端接口参考](https://github.com/vbeats/vcloud)
 
 ## 前后端认证
