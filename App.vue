@@ -1,6 +1,6 @@
 <script>
 import request from 'utils/request';
-import { handleAuth } from 'utils/auth.js';
+import { handleAuth, handleLogin } from 'utils/auth.js';
 
 export default {
 	onLaunch: function() {
@@ -23,7 +23,7 @@ export default {
 			}
 		},
 		checkToken() {
-			setTimeout(this.checkToken, 5 * 1000);
+			setTimeout(this.checkToken, 5 * 60 * 1000);
 
 			const user = uni.getStorageSync('user');
 			const access_token = uni.getStorageSync('access_token') || '';
@@ -42,6 +42,7 @@ export default {
 				return;
 			}
 
+			// access_token 过期
 			// refresh_token有效时间 >320秒  刷新token
 			if ((refresh_token_expire - now) / 1000 > 320) {
 				request('/auth/oauth/token?appid=wechat&secret=a135ec07-6eb2-4300-840a-9977dd8c813c', {
@@ -49,35 +50,19 @@ export default {
 					platform: 1,
 					refresh_token: refresh_token
 				}).then(res => {
-					if (res.data && res.data.code === 200) {
-						const data = res.data.data;
-						this.$store.dispatch('updateUser', data);
-						uni.setStorageSync('user', data);
-						uni.setStorageSync('access_token', data.access_token);
-						uni.setStorageSync('refresh_token', data.refresh_token);
-						uni.setStorageSync('access_token_expire', new Date().getTime() + 7200 * 1000);
-						uni.setStorageSync('refresh_token_expire', new Date().getTime() + 20 * 24 * 3600 * 1000);
-					}
+					const data = res.data.data;
+					this.$store.dispatch('updateUser', data);
+					uni.setStorageSync('user', data);
+					uni.setStorageSync('access_token', data.access_token);
+					uni.setStorageSync('refresh_token', data.refresh_token);
+					uni.setStorageSync('access_token_expire', new Date().getTime() + 7200 * 1000);
+					uni.setStorageSync('refresh_token_expire', new Date().getTime() + 20 * 24 * 3600 * 1000);
 				});
 			} else {
 				// 都无效了  重新login --> getUserInfo -->auth认证获取新的token
 				uni.login({
 					success: res => {
-						uni.getUserInfo({
-							provider: 'weixin',
-							withCredentials: true,
-							lang: 'zh_CN',
-							success: userInfoRes => {
-								handleAuth(res.code, userInfoRes);
-							},
-							fail: () => {
-								uni.showToast({
-									title: '用户授权已取消',
-									image: '/static/imgs/error.png',
-									duration: 2000
-								});
-							}
-						});
+						handleLogin(res.code, null);
 					}
 				});
 			}

@@ -5,7 +5,8 @@ const state = {
 
 const mutations = {
 	updateUser(state, userInfo) {
-		state.user = { ...userInfo
+		state.user = {
+			...userInfo
 		}
 	}
 }

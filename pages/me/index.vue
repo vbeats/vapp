@@ -1,12 +1,13 @@
 <template>
 	<div class="me">
 		me.....
-		<button open-type="getUserInfo" @getuserinfo="getUserInfo" v-if="!userInfo.username">嘿嘿嘿</button>
+		<button @click="getUserProfile" v-if="!userInfo.username">嘿嘿嘿</button>
+		<view v-else>{{ userInfo.username }}</view>
 	</div>
 </template>
 
 <script>
-import { getToken } from '@/utils/auth';
+import { handleAuth } from '@/utils/auth';
 import { mapGetters } from 'vuex';
 export default {
 	data() {
@@ -16,8 +17,25 @@ export default {
 		...mapGetters(['userInfo'])
 	},
 	methods: {
-		getUserInfo(userInfo) {
-			getToken(userInfo);
+		getUserProfile() {
+			uni.getUserProfile({
+				desc: '微信昵称、头像用于完善用户信息',
+				lang: 'zh_CN',
+				success: userInfoRes => {
+					uni.login({
+						success: res => {
+							handleAuth(res.code, userInfoRes);
+						}
+					});
+				},
+				fail: () => {
+					uni.showToast({
+						title: '用户未授权',
+						image: '/static/imgs/error.png',
+						duration: 2000
+					});
+				}
+			});
 		}
 	},
 	mounted() {
