@@ -1,18 +1,32 @@
 <template>
   <view class="index">
-    <text>{{ msg }}</text>
+    dahduawhdwaudadwa
+    index
+    <button @tap="test">dddd</button>
+    <login :show="!user||!user.access_token"/>
   </view>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script lang="ts">
+import {toRaw} from 'vue'
+import {useStore} from 'vuex'
+import login from '../../components/login/index.vue'
 import './index.styl'
 
 export default {
-  setup () {
-    const msg = ref('Hello world')
+  name: 'index',
+  components: {login},
+  setup() {
+    const store = useStore()
+    const user = toRaw(store.getters.getUserInfo).user || null
+
+    const test = () => {
+      console.log('test...')
+    }
+
     return {
-      msg
+      user,
+      test
     }
   }
 }
