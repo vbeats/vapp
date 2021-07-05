@@ -7,12 +7,12 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationStyle: 'custom',
   },
-  // subPackages: [
-  //   {
-  //     "root": "components/",
-  //     "pages": [
-  //       "login/index"
-  //     ]
-  //   }
-  // ]
+  subPackages: [
+    {
+      "root": "components/",
+      "pages": [
+        "login/index"
+      ]
+    }
+  ]
 }

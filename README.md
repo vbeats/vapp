@@ -6,7 +6,6 @@ Sponsor [![paypal.me/bootvue](https://cdn.jsdelivr.net/gh/boot-vue/pics@main/ico
 ## todo
 
 - [ ] NutUI 问题跟进
-- [ ] 分包加载
 
 ## 说明
 
