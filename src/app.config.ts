@@ -7,12 +7,13 @@ export default {
     navigationBarBackgroundColor: '#fff',
     navigationStyle: 'custom',
   },
-  subPackages: [
-    {
-      "root": "components/",
-      "pages": [
-        "login/index"
-      ]
-    }
-  ]
+  // 子包不要一定是不包含在tabbar中的页面, 不要是子组件
+  // subPackages: [
+  //   {
+  //     "root": "components/",
+  //     "pages": [
+  //       "login/index"
+  //     ]
+  //   }
+  // ]
 }
