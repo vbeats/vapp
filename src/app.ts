@@ -10,7 +10,7 @@ const app = createApp({
     console.log(options)
   },
 
-  setup() {
+  mounted() {
     bootstrap()
   },
 })
