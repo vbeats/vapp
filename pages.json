@@ -1,39 +1,84 @@
 {
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
 	"pages": [ //pages数组中第一项表示应用启动页，参考：https://uniapp.dcloud.io/collocation/pages
 		{
 			"path": "pages/index/index",
 			"style": {
-				"navigationBarTitleText": "首页"
+				"enablePullDownRefresh": false
 			}
-		},
-		{
-			"path": "pages/me/index",
+		}, {
+			"path": "pages/group/group",
 			"style": {
-				"navigationBarTitleText": "我"
+				"enablePullDownRefresh": false
 			}
+		}, {
+			"path": "pages/shop/shop",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/message/message",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+
+		}, {
+			"path": "pages/me/me",
+			"style": {
+				"enablePullDownRefresh": false
+			}
+
 		}
 	],
 	"globalStyle": {
-		"navigationBarTextStyle": "black",
-		"navigationBarTitleText": "vapp",
-		"navigationBarBackgroundColor": "#F8F8F8",
-		"backgroundColor": "#F8F8F8"
+		"navigationStyle": "custom",
+		"navigationBarTextStyle": "white"
 	},
 	"tabBar": {
-		"color": "#8a8a8a",
-		"selectedColor": "#1296db",
-		"borderStyle": "black",
-		"backgroundColor": "#ffffff",
+		"position": "bottom",
+		"borderStyle": "white",
 		"list": [{
-			"pagePath": "pages/index/index",
-			"iconPath": "static/imgs/home.png",
-			"selectedIconPath": "static/imgs/homes.png",
-			"text": "首页"
-		}, {
-			"pagePath": "pages/me/index",
-			"iconPath": "static/imgs/me.png",
-			"selectedIconPath": "static/imgs/mes.png",
-			"text": "我"
+				"pagePath": "pages/index/index",
+				"text": "",
+				"iconPath": "static/images/index.png",
+				"selectedIconPath": "static/images/index_s.png"
+			},
+			{
+				"pagePath": "pages/group/group",
+				"text": "",
+				"iconPath": "static/images/group.png",
+				"selectedIconPath": "static/images/group_s.png"
+			},
+			{
+				"pagePath": "pages/shop/shop",
+				"text": "",
+				"iconPath": "static/images/shop.png",
+				"selectedIconPath": "static/images/shop_s.png"
+			},
+			{
+				"pagePath": "pages/message/message",
+				"text": "",
+				"iconPath": "static/images/message.png",
+				"selectedIconPath": "static/images/message_s.png"
+			},
+			{
+				"pagePath": "pages/me/me",
+				"text": "",
+				"iconPath": "static/images/me.png",
+				"selectedIconPath": "static/images/me_s.png"
+			}
+		]
+	},
+	"subPackages": [{
+		"root": "pages/sub",
+		"pages": [{
+			"path": "test/test",
+			"style": {
+				"enablePullDownRefresh": false
+			}
 		}]
-	}
+	}]
 }

@@ -1,9 +1,18 @@
 const actions = {
-	updateUser({
+	load_userinfo: ({
 		commit
-	}, userInfo) {
-		commit("updateUser", userInfo)
-	}
+	}) => {
+		commit('load_userinfo')
+	},
+	login: ({
+		commit
+	}, {
+		code,
+		userInfo
+	}) => commit('login', {
+		code,
+		userInfo
+	})
 }
 
 export default actions

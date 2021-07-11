@@ -1,0 +1,56 @@
+{
+	"passwordSecret": "vapp",
+	"tokenSecret": "vapp",
+	"tokenExpiresIn": 7200,
+	"tokenExpiresThreshold": 600,
+	"bindTokenToDevice": false,
+	"passwordErrorLimit": 6,
+	"passwordErrorRetryTime": 3600,
+	"autoSetInviteCode": false,
+	"forceInviteCode": false,
+	"removePermissionAndRoleFromToken": false,
+	"app-plus": {
+		"tokenExpiresIn": 2592000,
+		"oauth": {
+			"weixin": {
+				"appid": "weixin appid",
+				"appsecret": "weixin appsecret"
+			},
+			"apple": {
+				"bundleId": "your bundleId"
+			}
+		}
+	},
+	"mp-weixin": {
+		"tokenExpiresIn": 259200,
+		"oauth": {
+			"weixin": {
+				"appid": "wxbb9863606a90a5b3",
+				"appsecret": "xxxxx"
+			}
+		}
+	},
+	"mp-alipay": {
+		"tokenExpiresIn": 259200,
+		"oauth": {
+			"alipay": {
+				"appid": "alipay appid",
+				"privateKey": "alipay privateKey",
+				"keyType": "PKCS8"
+			}
+		}
+	},
+	"service": {
+		"sms": {
+			"name": "your app name",
+			"codeExpiresIn": 180,
+			"smsKey": "your sms key",
+			"smsSecret": "your sms secret"
+		},
+		"univerify": {
+			"appid": "your appid",
+			"apiKey": "your apiKey",
+			"apiSecret": "your apiSecret"
+		}
+	}
+}

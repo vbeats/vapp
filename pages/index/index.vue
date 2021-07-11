@@ -1,48 +1,29 @@
 <template>
-	<view class="content">
-		<image class="logo" src="/static/imgs/logo.png"></image>
-		<view class="text-area">
-			<text class="title">{{ title }}</text>
-		</view>
+	<view>
+		<!-- 登录组件 -->
+		<login :show="!getUserInfo.userinfo || getUserInfo.token == ''"></login>
+		<u-navbar back-text="返回" title="index页面" :background="{ backgroundImage: 'linear-gradient(45deg, rgb(28, 187, 180), rgb(141, 198, 63))' }"></u-navbar>
+		index....
 	</view>
 </template>
 
 <script>
+import store from '../../store';
+import { mapGetters } from 'vuex';
+
 export default {
 	data() {
-		return {
-			title: 'Hello'
-		};
+		return {};
+	},
+	computed: {
+		...mapGetters(['getUserInfo'])
 	},
 	onLoad() {},
-	methods: {}
+	methods: {},
+	mounted() {}
 };
 </script>
 
-<style>
-.content {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-}
-
-.logo {
-	height: 200rpx;
-	width: 200rpx;
-	margin-top: 200rpx;
-	margin-left: auto;
-	margin-right: auto;
-	margin-bottom: 50rpx;
-}
-
-.text-area {
-	display: flex;
-	justify-content: center;
-}
-
-.title {
-	font-size: 36rpx;
-	color: #8f8f94;
-}
+<style lang="stylus" scoped>
+@import './index.styl'
 </style>

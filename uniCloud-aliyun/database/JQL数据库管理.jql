@@ -1,0 +1,2 @@
+db.collection('user').where({user_id:'60e9b3cb5c4484000127af45'}).get()
+

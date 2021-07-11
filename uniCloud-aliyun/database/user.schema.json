@@ -1,0 +1,105 @@
+{
+	"bsonType": "object",
+	"required": [],
+	"permission": {
+		"read": false,
+		"create": false,
+		"update": false,
+		"delete": false
+	},
+	"properties": {
+		"_id": {
+			"description": "ID，系统自动生成"
+		},
+		"nickname": {
+			"bsonType": "string",
+			"title": "昵称",
+			"description": "昵称",
+			"trim": "both",
+			"required": true
+		},
+		"user_id": {
+			"bsonType": "string",
+			"title": "user_id",
+			"description": "user id",
+			"required": true
+		},
+		"openid": {
+			"bsonType": "string",
+			"title": "user_id",
+			"description": "user id",
+			"trim": "both",
+			"required": true
+		},
+		"phone": {
+			"bsonType": "string",
+			"title": "phone",
+			"description": "手机号",
+			"trim": "both"
+		},
+		"avatar": {
+			"bsonType": "string",
+			"title": "avatar",
+			"description": "微信头像",
+			"trim": "both"
+		},
+		"country": {
+			"bsonType": "string",
+			"title": "country",
+			"description": "国家",
+			"trim": "both"
+		},
+		"province": {
+			"bsonType": "string",
+			"title": "province",
+			"description": "省",
+			"trim": "both"
+		},
+		"city": {
+			"bsonType": "string",
+			"title": "city",
+			"description": "市",
+			"trim": "both"
+		},
+		"gender": {
+			"bsonType": "int",
+			"title": "gender",
+			"description": "用户性别：0 未知 1 男性 2 女性",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "未知",
+				"value": 0
+			}, {
+				"text": "男",
+				"value": 1
+			}, {
+				"text": "女",
+				"value": 2
+			}]
+		},
+		"status": {
+			"bsonType": "int",
+			"description": "用户状态：0 正常 1 禁用",
+			"title": "用户状态",
+			"defaultValue": 0,
+			"enum": [{
+				"text": "正常",
+				"value": 0
+			}, {
+				"text": "禁用",
+				"value": 1
+			}]
+		},
+		"create_time": {
+			"bsonType": "timestamp",
+			"description": "加入时间",
+			"forceDefaultValue": {
+				"$env": "now"
+			}
+		},
+		"update_time": {
+			"bsonType": "timestamp",
+			"description": "更新时间"
+		}
+	}
+}
