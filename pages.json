@@ -75,7 +75,7 @@
 	"subPackages": [{
 		"root": "pages/sub",
 		"pages": [{
-			"path": "test/test",
+			"path": "login/login",
 			"style": {
 				"enablePullDownRefresh": false
 			}

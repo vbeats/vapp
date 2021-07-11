@@ -1,37 +1,24 @@
 <template>
-	<u-mask :show="isShow" :mask-click-able="false">
+	<u-mask :show="true" :mask-click-able="false">
 		<u-toast ref="uToast" />
 		<view class="warp">
 			<view class="login" @tap.stop @click.stop>
 				<view class="title">您还未登录</view>
 				<view class="sub-title">请先授权登录进行操作</view>
-				<image src="../../static/images/rocket.svg" class="logo"></image>
+				<image src="../../../static/images/rocket.svg" class="logo"></image>
 				<u-button :custom-style="btLoginStyle" throttle-time="3000" :ripple="false" @click="login">微信登录</u-button>
 			</view>
-			<image src="../../static/images/close.svg" class="bt-close" @click="isShow = false"></image>
 		</view>
 	</u-mask>
 </template>
 
 <script>
-import store from '../../store';
-import { login } from '../../utils/util';
+import store from '../../../store';
+import { login } from '../../../utils/util';
 export default {
 	name: 'login',
-	props: {
-		show: {
-			type: Boolean,
-			required: true
-		}
-	},
-	watch: {
-		show(v) {
-			this.isShow = v;
-		}
-	},
 	data() {
 		return {
-			isShow: this.show,
 			btLoginStyle: {
 				width: '400rpx',
 				backgroundColor: '#28CE3E',
@@ -47,14 +34,14 @@ export default {
 				desc: '用户完善用户信息',
 				lang: 'zh_CN',
 				success: async res => {
-					try {
-						const userInfo = res.userInfo;
-						const { code } = await login();
-						await store.dispatch('login', { code, userInfo });
-					} catch (err) {
-						console.error(err);
-					}
+					const userInfo = res.userInfo;
+					const { code } = await login();
+					await store.dispatch('login', { code, userInfo });
 					uni.hideLoading();
+					uni.navigateBack({
+						animationDuration: 380,
+						animationType: 'fade-out'
+					});
 				},
 				fail: () => {
 					this.$refs.uToast.show({
