@@ -1,33 +1,28 @@
 <template>
+  <navigation>index页面</navigation>
   <view class="index">
-    dahduawhdwaudadwa
-    index
-    <button @tap="test">dddd</button>
-    <login :show="!user||!user.access_token"/>
+    <login/>
+    <button @tap="showLogin" :style="{marginTop:'200rpx'}">点击登录</button>
   </view>
 </template>
 
 <script lang="ts">
-import {toRaw} from 'vue'
-import {useStore} from 'vuex'
 import login from '../../components/login/index.vue'
+import {useStore} from 'vuex'
 import './index.styl'
+import Navigation from "../../components/navigation/index.vue";
 
 export default {
   name: 'index',
-  components: {login},
+  components: {Navigation, login},
   setup() {
     const store = useStore()
-    const user = toRaw(store.getters.getUserInfo).user || null
 
-    const test = () => {
-      console.log('test...')
+    const showLogin = async () => {
+      await store.dispatch('toggle_login')
     }
 
-    return {
-      user,
-      test
-    }
+    return {showLogin}
   }
 }
 </script>

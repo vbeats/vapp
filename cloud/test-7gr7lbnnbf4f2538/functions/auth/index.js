@@ -1,64 +1,74 @@
 const cloud = require('wx-server-sdk')
 const axios = require('./axios')
+const config = require('./config')
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV
 })
 
-// --------------------服务端配置信息----------------------
-const tenant_code = 'V00000000001'
-const server_appid = 'wechat'
-const server_secret = 'a135ec07-6eb2-4300-840a-9977dd8c813c'
-// -----------------------------------------------------
-
+const {tenant_code, platform, server_appid, server_secret, login_type, refresh_token_type} = config
 // 处理用户认证-->access_token  与   刷新token
 // 返回res {code:200,msg:'success',data:xxx}
 exports.main = async (event, context) => {
-  console.log(event, context)
-  let response = {code: 500, msg: '网络异常'}
-  let res
 
+  let res = {code: 600, msg: '网络异常'}
+  const {OPENID, APPID, CLIENTIP} = cloud.getWXContext()
+  // 用户风险等级
+  let risk_rank = 0
   try {
-    const {OPENID} = cloud.getWXContext()
+    const {errCode, riskRank} = await cloud.openapi.riskControl.getUserRiskRank({
+      appid: APPID,
+      openid: OPENID,
+      scene: 0,
+      clientIp: CLIENTIP,
+      isTest: true
+    })
+    if (errCode === 0) {
+      risk_rank = riskRank
+    }
+  } catch (err) {
+    console.error("用户风控接口异常: ", err)
+  }
+
+  // -------------------------接口
+  try {
     const {action, api} = event
 
     switch (action) {
       case 'login':
-        const userInfo_openData = await cloud.getOpenData({
-          list: [event.cloudId]
-        })
-
-        // openid + userinfo --> 后端获取token
-        const userInfo = userInfo_openData.list[0].data
+        const {code, userInfo} = event
+        // code + userinfo --> 后端获取token
         // http 请求
-        res = await axios.post(api + '?appid=' + server_appid + "&secret=" + server_secret, {
-          tenant_code, type: 3, platform: 2,
+        res = await axios.post(api + `?appid=${server_appid}&secret=${server_secret}`, {
+          tenant_code, type: login_type, platform,
           wechat: {
-            openid: OPENID,
-            nickname: userInfo.nickName,
-            gender: userInfo.gender,
-            avatar: userInfo.avatarUrl,
-            province: userInfo.province,
-            country: userInfo.country,
-            city: userInfo.city
+            code,
+            nickname: userInfo.userInfo.nickName || '',
+            gender: userInfo.userInfo.gender,
+            avatar: userInfo.userInfo.avatarUrl || '',
+            province: userInfo.userInfo.province || '',
+            country: userInfo.userInfo.country || '',
+            city: userInfo.userInfo.city || '',
+            iv: userInfo.iv,
+            raw_data: userInfo.rawData,
+            encrypted_data: userInfo.encryptedData,
+            signature: userInfo.signature,
+            risk_rank
           }
         })
-        response = res.data
         break
       case 'refresh_token':
         // 相关参数 ---> 后端获取新的token
         const {refresh_token} = event
-        res = await axios.post(api + '?appid=' + server_appid + "&secret=" + server_secret, {
-          tenant_code, type: 0, platform: 2, refresh_token
+        res = await axios.post(api + `?appid=${server_appid}&secret=${server_secret}`, {
+          tenant_code, type: refresh_token_type, platform, refresh_token
         })
-        response = res.data
         break
       default:
-        response = {code: 401, msg: '参数错误'}
+        res = {code: 403, msg: '参数错误'}
     }
   } catch (err) {
     console.error('云函数执行异常.....', err)
-    response = {code: 401, msg: '参数错误'}
   }
-  return response
+  return res
 }

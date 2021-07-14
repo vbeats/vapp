@@ -1,6 +1,6 @@
 <template>
-  <view class="me">
-    <navigation>个人中心</navigation>
+  <view class="group">
+    <navigation>群组</navigation>
   </view>
 </template>
 

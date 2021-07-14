@@ -1,7 +1,11 @@
 // 初始化资源
 import Taro from "@tarojs/taro";
-import {requestCloud} from "./util/cloud";
 import store from "./store";
+
+// 初始化vuex中user数据
+const loadUser = async () => {
+  await store.dispatch('load_user')
+}
 
 // 检查token
 const checkToken = async () => {
@@ -26,28 +30,25 @@ const checkToken = async () => {
   // access_token 过期
   // refresh_token有效时间 >320秒  刷新token
   if ((refresh_token_expire - now) / 1000 > 320) {
-    console.log("刷新了token....")
-    requestCloud('auth', {
-      action: 'refresh_token',
-      api: BASE_URL + '/auth/oauth/token',
-      refresh_token
-    }, async res => {
-      const data = res.data
-      await store.dispatch('update_user', data)
+    const res = await Taro.cloud.callFunction({
+      name: 'auth',
+      data: {
+        action: 'refresh_token',
+        api: BASE_URL + '/auth/oauth/token',
+        refresh_token
+      }
     })
+    const result: any = res.result
+    if (result.code === 401) {
+      await store.dispatch('logout')
+    } else if (result.code === 200) {
+      await store.dispatch('update_user', result.data)
+    }
   } else {
-    // 都无效了  重新认证授权  用户超过30d没有使用
+    // 都无效了  重新认证授权  用户超过refresh_token expire 没有使用
     await store.dispatch('logout')
   }
 }
-
-
-// 初始化vuex中user数据
-
-const loadUser = async () => {
-  await store.dispatch('load_user')
-}
-
 
 export default (): void => {
 // 初始化云环境, 全局初始化一次
@@ -56,8 +57,8 @@ export default (): void => {
     }
   )
 
-  checkToken().then()
-
   loadUser().then()
+
+  checkToken().then()
 
 }

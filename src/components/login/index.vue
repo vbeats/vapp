@@ -1,73 +1,88 @@
 <template>
-  <view class="login" v-show="showModal">
+  <view class="login" v-show="show">
     <view class="content">
       <text class="title">您还未登录</text>
       <text class="hint">请先授权登录进行操作</text>
-      <image class="logo" src="../../assets/imgs/hot.svg"/>
-      <nut-button type="success" size="large" :block="true"
-                  shape="square"
-                  @tap="login" class="bt-login">微信登录
-      </nut-button>
+      <image class="logo" src="../../assets/images/hot.svg"/>
+      <button @tap="login" class="bt-login" type="primary">微信登录
+      </button>
     </view>
-    <image src="../../assets/imgs/close.svg" class="close" @tap="closeModal"/>
+    <image src="../../assets/images/close.svg" class="close" @tap="closeModal"/>
   </view>
 </template>
 
 <script lang="ts">
 import Taro from '@tarojs/taro'
-import {useStore} from 'vuex'
+import {ref, watchEffect} from "vue"
+import {showErrorToast} from "../../util/taroUtil"
+import {useStore} from "vuex"
 import './index.styl'
-import {requestCloud} from "../../util/cloud"
-import * as toast from '../../util/toast'
-import {ref, watchEffect} from "vue";
+import _ from "lodash";
 
 export default {
   name: 'login',
-  props: {
-    show: {
-      type: Boolean,
-      required: false,
-      default: false
-    }
-  },
-  setup(props) {
+  setup() {
     const store = useStore()
-    const showModal = ref()
+    const show = ref(false)
+    const wechatCode = ref('')
 
     // 用户登录认证
     const login = () => {
       Taro.getUserProfile({
         lang: "zh_CN",
         desc: "用户头像与昵称用于完善用户信息",
-        success: res => {
-          requestCloud(
-            'auth',
-            {
-              action: 'login',
-              api: BASE_URL + '/auth/oauth/token',
-              cloudId: res.cloudID
-            },
-            async res => {
-              await store.dispatch('update_user', res.data)
-            }
-          )
-        },
-        fail: () => {
-          toast.fail('用户拒绝授权')
+      }).then(async userInfo => {
+        await _.debounce(handleLogin, 180, {maxWait: 800})(userInfo)
+      }).catch(() => showErrorToast('用户拒绝授权'))
+    }
+
+    const handleLogin = async (userInfo: object) => {
+      Taro.showLoading({title: '处理中~'})
+      const rs = await Taro.cloud.callFunction({
+        name: 'auth',
+        data: {
+          action: 'login',
+          api: BASE_URL + '/auth/oauth/token',
+          code: wechatCode.value,
+          userInfo
         }
       })
+      Taro.hideLoading()
+      const result: any = rs.result
+      if (result.code !== 200) {
+        showErrorToast(result.msg)
+        // 重新获取code
+        const {code} = await Taro.login()
+        wechatCode.value = code
+        return
+      }
+      await store.dispatch('update_user', result.data)
     }
 
-    const closeModal = () => {
-      showModal.value = false
+    const closeModal = async () => {
+      await store.dispatch('toggle_login')
     }
 
-    watchEffect(() => {
-      showModal.value = props.show
+    watchEffect(async () => {
+      const {user} = store.getters.getUserInfo
+      show.value = user.showLogin || false
+      if (show.value) {
+        // login获取code, 有效时间5分钟
+        await getCode()
+      }
     })
 
+    const getCode = async () => {
+      setTimeout(getCode, 4 * 60 * 1000) // 4分钟一次
+      if (!show.value) {
+        return
+      }
+      const {code} = await Taro.login()
+      wechatCode.value = code
+    }
+
     return {
-      login, closeModal, showModal
+      login, closeModal, show
     }
   }
 }

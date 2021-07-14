@@ -1,6 +1,6 @@
 <template>
-  <view class="me">
-    <navigation>个人中心</navigation>
+  <view class="message">
+    <navigation>消息</navigation>
   </view>
 </template>
 

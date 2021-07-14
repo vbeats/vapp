@@ -1,6 +1,6 @@
 <template>
-  <view class="me">
-    <navigation>个人中心</navigation>
+  <view class="shop">
+    <navigation>商城</navigation>
   </view>
 </template>
 
