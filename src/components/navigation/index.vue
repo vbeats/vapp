@@ -8,6 +8,7 @@
       <slot/>
     </view>
   </view>
+  <view class="block" :style="navStyle"></view>
 </template>
 
 <script lang="ts">
