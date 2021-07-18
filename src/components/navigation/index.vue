@@ -36,7 +36,7 @@ export default {
   },
   setup(props) {
     const {top, height} = Taro.getMenuButtonBoundingClientRect();
-    console.log(Taro.getMenuButtonBoundingClientRect())
+
     const navStyle = {
       height: top + height + 'px',
       background: props.color,
