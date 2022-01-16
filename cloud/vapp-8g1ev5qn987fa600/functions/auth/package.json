@@ -1,0 +1,17 @@
+{
+  "name": "auth",
+  "version": "3.2.1",
+  "description": "auth",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "vbeats",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "wx-server-sdk": "^2.5.3"
+  },
+  "devDependencies": {
+  }
+}
