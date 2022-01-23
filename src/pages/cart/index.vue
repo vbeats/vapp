@@ -4,7 +4,5 @@
   </view>
 </template>
 
-<script setup lang="ts">
-import "./index.styl";
-
-</script>
+<script lang="ts" setup>
+import "./index.styl";</script>

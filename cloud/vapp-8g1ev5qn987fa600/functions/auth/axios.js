@@ -24,4 +24,4 @@ axios.interceptors.response.use((response) => {
   return response
 }, errorHandler)
 
-module.exports = axios;
+module.exports = axios

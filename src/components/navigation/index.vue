@@ -1,14 +1,14 @@
 <template>
-  <view class="navigation" :style="navStyle">
-    <view class="back" @tap="back" v-if="showBack">
-      <image src="../../assets/img/back.svg" class="back-img" :style="backStyle" />
+  <view :style="navStyle" class="navigation">
+    <view v-if="showBack" class="back" @tap="back">
+      <image :style="backStyle" class="back-img" src="../../assets/img/back.svg"/>
       <text class="text">{{ backText }}</text>
     </view>
     <view class="title">
-      <slot />
+      <slot/>
     </view>
   </view>
-  <view class="block" :style="navStyle"></view>
+  <view :style="navStyle" class="block"></view>
 </template>
 
 <script lang="ts">
@@ -35,7 +35,7 @@ export default {
     }
   },
   setup(props) {
-    const { top, height } = Taro.getMenuButtonBoundingClientRect();
+    const {top, height} = Taro.getMenuButtonBoundingClientRect();
 
     const navStyle = {
       height: top + height + "px",

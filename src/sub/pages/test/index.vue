@@ -1,7 +1,7 @@
 <template>
-<view>test...</view>
+  <view>test...</view>
 </template>
 
-<script setup lang="ts">
+<script lang="ts" setup>
 
 </script>

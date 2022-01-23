@@ -21,7 +21,7 @@ yarn build:weapp
 1. `taro` `vue3` `typescript` `vuex` `nutui` `小程序云开发`
 2. `cloud`目录 --> 微信小程序云开发相关函数, 云函数执行超时时间最好配置`6s`以上
 3. 注意修改`project.config.json` 和 `config`目录下 相关的配置信息
-4. `auth` 云函数中某些敏感数据配置也要修改
+4. `auth` 云函数中某些敏感数据`RSA`加密传输
 
 ## 自定义组件
 

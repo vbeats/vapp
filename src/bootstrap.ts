@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import store from './store'
-import handleLogin from './util/auth'
+import {AUTH} from './util/api'
+import {handleLogin} from './util/auth'
 
 // 初始化vuex中user数据
 const loadUser = async () => {
@@ -34,8 +35,7 @@ const checkToken = async () => {
       name: 'auth',
       data: {
         action: 'refresh_token',
-        // @ts-ignore
-        api: BASE_URL + '/auth/oauth2/token',
+        api: AUTH,
         refresh_token,
       },
     })

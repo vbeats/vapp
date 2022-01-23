@@ -1,6 +1,6 @@
 {
   "name": "auth",
-  "version": "3.2.1",
+  "version": "3.2.2",
   "description": "auth",
   "main": "index.js",
   "scripts": {
@@ -10,8 +10,8 @@
   "license": "MIT",
   "dependencies": {
     "axios": "^0.24.0",
+    "node-rsa": "^1.1.1",
     "wx-server-sdk": "^2.5.3"
   },
-  "devDependencies": {
-  }
+  "devDependencies": {}
 }

@@ -1,6 +1,7 @@
 import Taro from '@tarojs/taro'
 import {showErrorToast} from './msg'
 import store from '../store'
+import {AUTH, BIND_PHONE} from './api'
 
 const handleLogin = async (userInfo?: object) => {
   Taro.showLoading({title: '处理中~'})
@@ -8,8 +9,7 @@ const handleLogin = async (userInfo?: object) => {
     name: 'auth',
     data: {
       action: 'auth',
-      // @ts-ignore
-      api: BASE_URL + '/auth/oauth2/token',
+      api: AUTH,
       userInfo,
     },
   })
@@ -25,4 +25,24 @@ const handleLogin = async (userInfo?: object) => {
   }
 }
 
-export default handleLogin
+const handleBindPhone = async (cloudId: string) => {
+  Taro.showLoading({title: '处理中~'})
+  const rs = await Taro.cloud.callFunction({
+    name: 'auth',
+    data: {
+      action: 'bind_phone',
+      api: BIND_PHONE,
+      cloudId,
+      access_token: store.getters.getUserInfo.access_token,
+    },
+  })
+  Taro.hideLoading()
+  const result: any = rs.result
+  if (result.code !== 200) {
+    showErrorToast(result.msg)
+    return
+  }
+  await store.dispatch('update_user', {phone: result.data})
+}
+
+export {handleLogin, handleBindPhone}

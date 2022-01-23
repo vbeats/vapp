@@ -1,6 +1,7 @@
 const cloud = require('wx-server-sdk')
 const axios = require('./axios')
 const config = require('./config')
+const encrypt = require('./crypto')
 
 cloud.init({
   env: cloud.DYNAMIC_CURRENT_ENV,
@@ -12,13 +13,14 @@ const {tenant_code, platform, server_client_id, server_secret} = config
 exports.main = async (event, context) => {
   let res = {code: 600, msg: '网络异常'}
   const {action, api} = event
-  const {OPENID, UNIONID} = cloud.getWXContext()
 
   // -------------------------接口
   try {
     switch (action) {
       case 'auth':
         const {userInfo} = event
+        const {OPENID, UNIONID} = cloud.getWXContext()
+
         // openid + userinfo --> 后端获取token
         res = await axios.post(api, {
           tenant_code,
@@ -27,8 +29,8 @@ exports.main = async (event, context) => {
           grant_type: 'WECHAT',
           platform,
           wechat: {
-            openid: OPENID,
-            unionid: UNIONID,
+            openid: encrypt(OPENID),
+            unionid: encrypt(UNIONID),
             nickname: userInfo ? userInfo.userInfo.nickName : '',
             gender: userInfo ? userInfo.userInfo.gender : undefined,
             avatar: userInfo ? userInfo.userInfo.avatarUrl : '',
@@ -40,6 +42,18 @@ exports.main = async (event, context) => {
             encrypted_data: userInfo ? userInfo.encryptedData : undefined,
             signature: userInfo ? userInfo.signature : undefined,
           },
+        })
+        break
+      case 'bind_phone':
+        const {cloudId, access_token} = event
+        axios.defaults.headers.Authorization = 'Bearer ' + access_token
+
+        const openData = await cloud.getOpenData({
+          list: [cloudId],
+        })
+        const data = openData.list[0].data
+        res = await axios.post(api, {
+          phone: encrypt(data.purePhoneNumber),
         })
         break
       case 'refresh_token':
