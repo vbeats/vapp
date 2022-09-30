@@ -4,7 +4,7 @@ export default async () => {
     const userStore = useUserStore()
     await userStore.loadStorage()
 
-    // update
+    // #ifdef MP-WEIXIN
     const updateManager = uni.getUpdateManager();
 
     updateManager.onCheckForUpdate((res) => {
@@ -23,4 +23,5 @@ export default async () => {
 
     updateManager.onUpdateFailed((err) => {
     })
+    // #endif
 }
