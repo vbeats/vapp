@@ -1,15 +1,21 @@
-import axios from 'uni-ajax'
+import axios, {AjaxRequestConfig, AjaxRequestTask} from 'uni-ajax'
 import {API} from "@/common/const"
 import {storeToRefs} from "pinia"
 import {useUserStore} from "@/store/user"
 import {login} from "@/util/auth"
+
+const queue = new Map()
 
 const instance = axios.create({
     baseURL: API,
     header: {
         'Content-Type': 'application/json',
     },
-    timeout: 15000
+    timeout: 15000,
+    xhr: (task: AjaxRequestTask, config: AjaxRequestConfig) => {
+        queue.get(config.url)?.abort()
+        queue.set(config.url, task)
+    }
 })
 
 instance.interceptors.request.use(
