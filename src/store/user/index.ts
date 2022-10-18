@@ -1,14 +1,9 @@
 import {defineStore} from 'pinia'
-import dayjs from "dayjs";
-import {ACCESS_TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE} from "@/common/const"
 
 const defaultUser = {
     id: '',
     tenant_id: '',
-    access_token: '',
-    refresh_token: '',
-    access_token_expire: -1,
-    refresh_token_expire: -1
+    token: '',
 }
 
 export const useUserStore = defineStore({
@@ -24,32 +19,16 @@ export const useUserStore = defineStore({
                 this.$patch(state => {
                     state.id = userStorage.id
                     state.tenant_id = userStorage.tenant_id
-                    state.access_token = userStorage.access_token
-                    state.refresh_token = userStorage.refresh_token
-                    state.access_token_expire = userStorage.access_token_expire
-                    state.refresh_token_expire = userStorage.refresh_token_expire
+                    state.token = userStorage.token
                 })
             }
         },
         saveToken(param: any) {
-            const now = dayjs().unix()
+            console.log(param)
             this.$patch(state => {
                 state.id = param.id
                 state.tenant_id = param.tenant_id
-                state.access_token = param.access_token
-                state.refresh_token = param.refresh_token
-                state.access_token_expire = now + ACCESS_TOKEN_EXPIRE
-                state.refresh_token_expire = now + REFRESH_TOKEN_EXPIRE * 24 * 3600
-            })
-            uni.setStorageSync('user', this.$state)
-        },
-        updateAccessToken(param: any) {
-            const now = dayjs().unix()
-            this.$patch(state => {
-                state.id = param.id
-                state.tenant_id = param.tenant_id
-                state.access_token = param.access_token
-                state.access_token_expire = now + ACCESS_TOKEN_EXPIRE
+                state.token = param.token.token_value
             })
             uni.setStorageSync('user', this.$state)
         }

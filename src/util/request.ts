@@ -21,7 +21,7 @@ const instance = axios.create({
 instance.interceptors.request.use(
     config => {
         const userStore = storeToRefs(useUserStore())
-        config.header.Authorization = 'Bearer ' + userStore.access_token?.value
+        config.header['token'] = userStore.token?.value
         config.header['X-USER-ID'] = userStore.id?.value || ''
         config.header['X-TENANT-ID'] = userStore.tenant_id?.value || ''
 

@@ -1,13 +1,13 @@
 // login : code--->session
 import {storeToRefs} from "pinia"
 import {useUserStore} from "@/store/user"
-import dayjs from "dayjs"
-import {getToken} from "@/api/auth"
-import {ref} from "vue";
+import {getToken, tokenInfo} from "@/api/auth"
+import {ref} from "vue"
 
 const timer = ref()
 
 const login = () => {
+    uni.showLoading({})
     uni.login({
         provider: 'weixin',
         success: async res => {
@@ -19,41 +19,33 @@ const login = () => {
                 grant_type: 'wx_miniapp'
             })
             await useUserStore().saveToken({...result.data})
+        },
+        complete: () => {
+            uni.hideLoading()
         }
     })
 }
 
-// check access_token refresh_token
 const checkToken = async () => {
-    timer.value = setTimeout(checkToken, 5 * 60 * 1000)
+    timer.value = setTimeout(checkToken, 15 * 60 * 1000)
 
-    const now = dayjs().unix()
     const userStore = useUserStore()
-    const {access_token, refresh_token, access_token_expire, refresh_token_expire} = storeToRefs(userStore)
+    const {token} = storeToRefs(userStore)
 
-    if (access_token.value === '' || refresh_token_expire.value - now <= 320) {
-        // refresh_token有效时间不足一次检查周期5分钟
+    if (token.value === '') {
         login()
         return
     }
 
-    // access_token如果到期了 刷新; 未到期, 直接用
-    if (access_token.value !== '' && access_token_expire.value - now >= 320) {
-        // 剩余时间大于一次检查周期320s>5分钟
-        return
+    // token info
+    const res = await tokenInfo()
+    if (!res.data.is_login && res.data.token_timeout <= 35 * 60) {
+        login()
     }
-
-    // 刷新token
-    const res = await getToken({
-        refresh_token: refresh_token.value,
-        grant_type: 'refresh_token',
-    })
-
-    await userStore.updateAccessToken({...res.data})
 }
 
 const clearTimer = () => {
-    clearTimeout(timer.value)
+    timer.value && clearTimeout(timer.value)
 }
 
 
