@@ -41,6 +41,10 @@ instance.interceptors.response.use(
             case 200:
                 return response.data
             default:
+                uni.showModal({
+                    content: response.data.msg,
+                    showCancel: false
+                })
                 return Promise.reject(response.data.msg)
         }
         throw new Error()
