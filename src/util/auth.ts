@@ -16,7 +16,7 @@ const login = () => {
                     appid: uni.getAccountInfoSync().miniProgram.appId,
                     code: res.code,
                 },
-                grant_type: 'wx_miniapp'
+                grant_type: 'wx_ma'
             })
             await useUserStore().saveToken({...result.data})
         },
