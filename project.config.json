@@ -29,5 +29,8 @@
   "editorSetting": {
     "tabIndent": "insertSpaces",
     "tabSize": 2
+  },
+  "simulatorPluginLibVersion": {
+    "qywx_simulator_plugin": "2.4.0"
   }
 }
