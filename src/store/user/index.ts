@@ -7,7 +7,7 @@ const appid = Taro.getAccountInfoSync().miniProgram.appId
 
 const defaultUserInfo = {
     id: '',
-    merchantId: '',
+    tenantId: '',
     nickName: '',
     phone: '',
     token: '',
